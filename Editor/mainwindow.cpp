@@ -122,11 +122,7 @@ void MainWindow::on_cmbInputFile_currentIndexChanged(int index)
 
 void MainWindow::on_pushButton_clicked()
 {
-    QFile iConfigFile("/home/mhassanzadeh/new.save");
-    iConfigFile.open(QIODevice::WriteOnly);
-    iConfigFile.write(ui->txtJson->document()->toPlainText().toLocal8Bit());
-    iConfigFile.flush();
-    iConfigFile.close();
+    on_action_Save_triggered();
 }
 
 void MainWindow::on_txtJson_textChanged()
@@ -135,4 +131,15 @@ void MainWindow::on_txtJson_textChanged()
     ui->twdConfigTree->clear();
     ui->twdConfigTree->insertTopLevelItems(0,createConfigTree(jSonParsed));
     ui->twdConfigTree->expandAll();
+}
+
+void MainWindow::on_action_Save_triggered()
+{
+    QFileDialog* iFileDialog = new QFileDialog();
+
+    QFile iConfigFile(iFileDialog->getSaveFileName(this,"Save Config File","./","Config File (*.json)"));
+    iConfigFile.open(QIODevice::WriteOnly);
+    iConfigFile.write(ui->txtJson->document()->toPlainText().toLocal8Bit());
+    iConfigFile.flush();
+    iConfigFile.close();
 }
